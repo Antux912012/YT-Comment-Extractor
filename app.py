@@ -337,8 +337,10 @@ def extract():
         total_available = extract_total_comments(video_url)
         print(f"Video reports {total_available} total comments")
         
-        # Get comments
-        all_comments = get_comments(video_url, max_comments=num_comments)
+        # Extract a larger pool than requested so repeated requests can return different random selections.
+        comment_pool_size = max(num_comments * 3, num_comments + 50)
+        comment_pool_size = min(comment_pool_size, 1000)
+        all_comments = get_comments(video_url, max_comments=comment_pool_size)
         
         if not all_comments:
             return jsonify({
@@ -348,10 +350,12 @@ def extract():
                          '3. The video has no comments yet'
             }), 404
         
-        # If we have more than requested, randomly sample
+        # If we have more than requested, randomly sample from the larger pool.
         if len(all_comments) > num_comments:
             selected = random.sample(all_comments, num_comments)
         else:
+            # Still shuffle the comments when the pool is smaller than requested.
+            random.shuffle(all_comments)
             selected = all_comments
         
         print(f"Returning {len(selected)} comments")
