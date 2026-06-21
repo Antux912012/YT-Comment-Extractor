@@ -50,6 +50,8 @@ YT_Comments_Export_Random/
 
 ## Running the Application
 
+### Local Python
+
 1. **Start the Flask server:**
    ```bash
    python app.py
@@ -58,12 +60,49 @@ YT_Comments_Export_Random/
 2. **Open your browser:**
    - Navigate to `http://localhost:5000`
 
-3. **Using the application:**
-   - Copy a YouTube video link (e.g., `https://www.youtube.com/watch?v=dQw4w9WgXcQ`)
-   - Paste it in the search box
-   - Click "Extract Comments"
-   - View the results in the table below
-   - Download as CSV or copy to clipboard
+### Docker (recommended for OS-independent execution)
+
+1. **Build the Docker image:**
+   ```bash
+   docker build -t yt-comment-extractor .
+   ```
+
+2. **Run the container:**
+   ```bash
+   docker run --rm -p 5000:5000 yt-comment-extractor
+   ```
+
+3. **Open your browser:**
+   - Navigate to `http://localhost:5000`
+
+### Docker Compose
+
+1. **Start the service:**
+   ```bash
+   docker compose up --build
+   ```
+
+2. **Open your browser from this machine:**
+   - Navigate to `http://localhost:5000`
+
+3. **Open from another device on the same local network:**
+   - Find the Docker host IP, then open `http://<HOST_IP>:5000`
+   - Example: `http://192.168.1.208:5000`
+
+4. **Stop the service:**
+   ```bash
+   docker compose down
+   ```
+
+> Note: Docker exposes port `5000` on the host, so the app is accessible from any device on the same LAN using the host IP.
+
+### Using the application
+
+- Copy a YouTube video link (e.g., `https://www.youtube.com/watch?v=dQw4w9WgXcQ`)
+- Paste it in the search box
+- Click "Extract Comments"
+- View the results in the table below
+- Download as CSV or copy to clipboard
 
 ## Supported YouTube URL Formats
 
