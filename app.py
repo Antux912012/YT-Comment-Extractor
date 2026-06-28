@@ -324,24 +324,37 @@ def extract():
         
         video_url = data.get('url', '').strip()
         num_comments = data.get('num_comments', 100)
+        selection_mode = data.get('selection_mode', 'random')
         
         if not video_url:
             return jsonify({'error': 'Please provide a valid YouTube URL'}), 400
         
-        try:
-            num_comments = int(num_comments)
-            num_comments = max(1, min(num_comments, 1000))
-        except:
-            num_comments = 100
-        
+        if isinstance(num_comments, str) and num_comments.lower() == 'all':
+            num_comments = None
+        else:
+            try:
+                num_comments = int(num_comments)
+                num_comments = max(1, min(num_comments, 1000))
+            except:
+                num_comments = 100
+
+        if selection_mode != 'ordered':
+            selection_mode = 'random'
+
         total_available = extract_total_comments(video_url)
         print(f"Video reports {total_available} total comments")
         
-        # Extract a larger pool than requested so repeated requests can return different random selections.
-        comment_pool_size = max(num_comments * 3, num_comments + 50)
-        comment_pool_size = min(comment_pool_size, 1000)
+        if selection_mode == 'ordered':
+            comment_pool_size = num_comments
+        else:
+            if num_comments is None:
+                comment_pool_size = 1000
+            else:
+                comment_pool_size = max(num_comments * 3, num_comments + 50)
+                comment_pool_size = min(comment_pool_size, 1000)
+
         all_comments = get_comments(video_url, max_comments=comment_pool_size)
-        
+
         if not all_comments:
             return jsonify({
                 'error': 'No comments found. This may be because:\n'
@@ -349,15 +362,18 @@ def extract():
                          '2. The video is private/restricted\n'
                          '3. The video has no comments yet'
             }), 404
-        
-        # If we have more than requested, randomly sample from the larger pool.
-        if len(all_comments) > num_comments:
-            selected = random.sample(all_comments, num_comments)
+
+        if selection_mode == 'ordered':
+            selected = all_comments[:num_comments] if num_comments is not None and len(all_comments) > num_comments else all_comments
         else:
-            # Still shuffle the comments when the pool is smaller than requested.
-            random.shuffle(all_comments)
-            selected = all_comments
-        
+            # If we have more than requested, randomly sample from the larger pool.
+            if num_comments is not None and len(all_comments) > num_comments:
+                selected = random.sample(all_comments, num_comments)
+            else:
+                # Still shuffle the comments when the pool is smaller than requested or when using all comments.
+                random.shuffle(all_comments)
+                selected = all_comments
+
         print(f"Returning {len(selected)} comments")
         
         # Debug: Check if dates are present
@@ -366,6 +382,7 @@ def extract():
         
         return jsonify({
             'success': True,
+            'selection_mode': selection_mode,
             'comments': selected,
             'count': len(selected),
             'total_available': total_available or len(all_comments),

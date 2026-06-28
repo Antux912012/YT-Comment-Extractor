@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const urlInput = document.getElementById('videoUrl');
     const numCommentsSelect = document.getElementById('numComments');
+    const selectionModeSelect = document.getElementById('selectionMode');
     const searchBtn = document.getElementById('searchBtn');
     const loadingSpinner = document.getElementById('loadingSpinner');
     const errorMessage = document.getElementById('errorMessage');
@@ -16,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let currentComments = [];
     let totalAvailable = 0;
+    let currentSelectionMode = 'random';
     const themeToggle = document.getElementById('themeToggle');
 
     if (themeToggle) {
@@ -33,6 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
     searchBtn.addEventListener('click', async function() {
         const videoUrl = urlInput.value.trim();
         const numComments = numCommentsSelect.value;
+        const selectionMode = selectionModeSelect.value;
 
         if (!videoUrl) {
             showError('Please enter a YouTube video URL');
@@ -44,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        await extractComments(videoUrl, numComments);
+        await extractComments(videoUrl, numComments, selectionMode);
     });
 
     // CSV Download button click
@@ -123,7 +126,7 @@ document.addEventListener('DOMContentLoaded', function() {
         errorMessage.classList.remove('error');
     }
 
-    async function extractComments(videoUrl, numComments) {
+    async function extractComments(videoUrl, numComments, selectionMode) {
         loadingSpinner.style.display = 'block';
         resultsSection.style.display = 'none';
         hideError();
@@ -136,7 +139,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
                 body: JSON.stringify({ 
                     url: videoUrl,
-                    num_comments: numComments
+                    num_comments: numComments,
+                    selection_mode: selectionMode
                 })
             });
 
@@ -149,6 +153,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             if (data.success) {
+                currentSelectionMode = selectionMode;
                 currentComments = data.comments;
                 displayComments(data.comments, data.total_available);
                 resultsSection.style.display = 'block';
@@ -173,7 +178,8 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Calculate and display selection info
         const percentage = totalAvailable > 0 ? ((comments.length / totalAvailable) * 100).toFixed(1) : 100;
-        const selectedInfo = `Selected: ${comments.length} out of ${totalAvailable} total comments (${percentage}%)`;
+        const modeText = currentSelectionMode === 'ordered' ? 'Ordered' : 'Random';
+        const selectedInfo = `Mode: ${modeText} | Selected: ${comments.length} out of ${totalAvailable} total comments (${percentage}%)`;
         selectionInfo.textContent = selectedInfo;
         
         commentsList.innerHTML = '';

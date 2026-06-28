@@ -9,6 +9,7 @@ A simple web application to extract random 100 comments from any YouTube video a
 - 📊 **CSV Export**: Download comments with columns: Nickname, Date, Comment, Has Replies (Y/N)
 - 📋 **Copy to Clipboard**: Copy extracted comments directly to clipboard
 - 🎲 **Random Selection**: Randomly selects 100 comments from available ones
+- 🔀 **Ordered Extraction Option**: Choose to extract comments in the order they appear on YouTube
 - 📱 **Responsive Design**: Works on desktop, tablet, and mobile devices
 
 ## Project Structure
@@ -100,6 +101,7 @@ YT_Comments_Export_Random/
 
 - Copy a YouTube video link (e.g., `https://www.youtube.com/watch?v=dQw4w9WgXcQ`)
 - Paste it in the search box
+- Select the extraction mode: **Random comments** or **Ordered comments**
 - Click "Extract Comments"
 - View the results in the table below
 - Download as CSV or copy to clipboard

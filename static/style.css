@@ -537,6 +537,10 @@ body.theme-dark .comments-table td {
     border-bottom-color: #3b4252;
 }
 
+body.theme-dark .comments-table td .comment-text {
+    color: #d8dee9;
+}
+
 body.theme-dark .comments-table tbody tr:hover {
     background: #434c5e;
 }
