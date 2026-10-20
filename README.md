@@ -1,9 +1,24 @@
 # YouTube Comments Extractor
 
-A simple web application to extract random 100 comments from any YouTube video and export them as a CSV file with pipe delimiter (`|`).
+<p align="center">
+  <a href="https://antux912012.github.io/YT-Comment-Extractor-GTK/">
+    <img src="https://img.shields.io/badge/Web%20App-Try%20Online%20(GitHub%20Pages)-brightgreen?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Live Web App" />
+  </a>
+  <a href="https://antux912012.github.io/YT-Comment-Extractor-GTK/">
+    <img src="https://img.shields.io/badge/GitHub%20Pages-Live-blue?style=for-the-badge&logo=github" alt="GitHub Pages" />
+  </a>
+</p>
+
+> ### 🌐 Try the Web Version Online (No Installation Required)
+> Want to extract YouTube comments right now without running a local server or installing Docker/Python?  
+> **👉 Use the live browser-based app: [https://antux912012.github.io/YT-Comment-Extractor-GTK/](https://antux912012.github.io/YT-Comment-Extractor-GTK/)**  
+> *Zero backend required, fully client-side extraction with CSV/JSON exports directly in your browser.*
+
+A web application and service to extract random or ordered comments from any YouTube video and export them as a CSV file with pipe delimiter (`|`) or JSON. Also available as a native GTK4/Libadwaita desktop app at [YT-Comment-Extractor-GTK](https://github.com/Antux912012/YT-Comment-Extractor-GTK).
 
 ## Features
 
+- 🌐 **Live Online Web App**: Use immediately with zero setup at **[https://antux912012.github.io/YT-Comment-Extractor-GTK/](https://antux912012.github.io/YT-Comment-Extractor-GTK/)**
 - 🎯 **Search Engine-like Interface**: Clean, intuitive design similar to Google search
 - 📝 **Easy Comment Extraction**: Just paste a YouTube video link
 - 📊 **CSV Export**: Download comments with columns: Nickname, Date, Comment, Has Replies (Y/N)
@@ -11,6 +26,7 @@ A simple web application to extract random 100 comments from any YouTube video a
 - 🎲 **Random Selection**: Randomly selects 100 comments from available ones
 - 🔀 **Ordered Extraction Option**: Choose to extract comments in the order they appear on YouTube
 - 📱 **Responsive Design**: Works on desktop, tablet, and mobile devices
+- 🖥️ **Native Desktop GTK Edition**: Prefer a native Linux app? Check out [YT-Comment-Extractor-GTK](https://github.com/Antux912012/YT-Comment-Extractor-GTK)
 
 ## Project Structure
 
